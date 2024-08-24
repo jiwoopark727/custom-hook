@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Button from '../components/Button';
 import CheckBox from '../components/Checkbox';
 import Input from '../components/Input';
@@ -7,6 +7,7 @@ import useReset from '../hooks/useReset';
 import useInput from '../hooks/useInput';
 
 const Auth = () => {
+  const els = useRef<HTMLInputElement>(null);
   const [type, setType] = useState("Sign");
   const [name, onChangeName, resetName] = useInput("");
   const [email, onChangeEmail, resetEmail] = useInput("");
@@ -16,6 +17,9 @@ const Auth = () => {
 
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    els.current?.focus();
+
     const loginValidation =
       email.trim() === "" || password.trim() === "" || !checked;
     const signupValidation = loginValidation || name.trim() === "";
@@ -39,6 +43,9 @@ const Auth = () => {
           <h1 className="text-xl font-bold mb-[10px]">{type} Into App</h1>
           <p className="text-sm mb-5">Please enter your details to continue.</p>
           <form className="grid gap-4" onSubmit={onSubmitHandler}>
+          <input 
+          ref={els}
+          className="inter h-[44px] text-sm border border-[#4F4F4F] py-[13.5px] px-[16px] rounded-lg placeholder-[#ACACAC]" />{" "}
             {type === "Sign" && (
               <Input
                 type="text"
